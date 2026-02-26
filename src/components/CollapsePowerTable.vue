@@ -11,13 +11,7 @@
       <thead>
         <tr>
           <th class="table-header-label" @click="toggleExpand">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-              "
-            >
+            <div class="header-label-content">
               <span class="label">{{ tableTitle }}</span>
               <span class="trigger-arrow" :class="{ expanded: isExpanded }"
                 >▼</span
@@ -42,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 // 定义组件属性
 const props = defineProps({
@@ -96,14 +90,7 @@ const props = defineProps({
     type: String,
     default: "#1a1a2e",
   },
-}); // 添加动态样式绑定
-const containerStyle = computed(() => ({
-  "--title-color": props.titleColor,
-  "--label-color": props.labelColor,
-  "--border-color": props.borderColor,
-  "--line-color": props.lineColor,
-  "--bg-color": props.bgColor,
-}));
+});
 
 // 折叠状态
 const isExpanded = ref(false);
@@ -112,15 +99,6 @@ const isExpanded = ref(false);
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;
 };
-
-// 动态计算样式
-const styleConfig = computed(() => ({
-  "--title-color": props.titleColor,
-  "--label-color": props.labelColor,
-  "--border-color": props.borderColor,
-  "--line-color": props.lineColor,
-  "--bg-color": props.bgColor,
-}));
 </script>
 
 <style lang="scss" scoped>
@@ -208,10 +186,17 @@ const styleConfig = computed(() => ({
   font-weight: bold;
   padding: 4px 8px;
   text-align: left;
-  .label {
-    &:hover {
-      text-decoration: underline;
-    }
+}
+
+.header-label-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-header-label .label {
+  &:hover {
+    text-decoration: underline;
   }
 }
 

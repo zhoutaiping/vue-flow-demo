@@ -46,30 +46,40 @@ defineProps({
 <template>
   <div class="fd-right">
 
-    <PowerTable
+    <!-- 绝对定位的 PowerTable -->
+    <div class="fd-right__absolute-table fd-right__absolute-table--1">
+      <PowerTable
         :title="'进线柜-100'"
         :dataList="powerTableConfig.dataList"
         :titleColor="powerTableConfig.titleColor"
         :labelColor="powerTableConfig.labelColor"
         :borderColor="powerTableConfig.borderColor"
-        style=" width: 250px; margin-right: 50px; position: absolute; top: 390px; left: 900px;"
+        class="power-table--250"
       />
+    </div>
+
+    <div class="fd-right__absolute-table fd-right__absolute-table--2">
       <PowerTable
-       :title="'SVG-22222100'"
+        :title="'SVG-22222100'"
         :dataList="powerTableConfig.dataList"
         :titleColor="powerTableConfig.titleColor"
         :labelColor="powerTableConfig.labelColor"
         :borderColor="powerTableConfig.borderColor"
-        style=" width: 200px; margin-right: 50px; position: absolute; top: 390px; left: 1250px;"
+        class="power-table--200"
       />
+    </div>
+
+    <div class="fd-right__absolute-table fd-right__absolute-table--3">
       <PowerTable
         :title="'SVG-222222100'"
         :dataList="powerTableConfig.dataList"
         :titleColor="powerTableConfig.titleColor"
         :labelColor="powerTableConfig.labelColor"
         :borderColor="powerTableConfig.borderColor"
-        style=" width: 200px; margin-right: 50px; position: absolute; top: 390px; left: 1550px;"
+        class="power-table--200"
       />
+    </div>
+
     <div class="fd-right__label">{{ flowTitleUnit }}</div>
     <div class="fd-right__spacer"></div>
 
@@ -81,7 +91,7 @@ defineProps({
         :class="['fd-right__cell', { 'fd-right__cell--first': index === 0 }]"
       >
         <div
-          class="fd-right__vline"
+          class="fd-right__vline fd-right__vline--dynamic"
           :style="{ height: item.lineHeight || '100%' }"
         ></div>
         <TextItem :text="item.text" :status="item.status" class="fd-right__label-item" />
@@ -94,7 +104,7 @@ defineProps({
         :titleColor="powerTableConfig.titleColor"
         :labelColor="powerTableConfig.labelColor"
         :borderColor="powerTableConfig.borderColor"
-        style="margin-left: 40px; width: 320px"
+        class="power-table--symbol-right"
       />
       <CircleLine
         class="fd-right__symbol-icon"
@@ -105,7 +115,7 @@ defineProps({
       />
     </div>
 
-    <div style="display: flex; flex-direction: row; gap: 5px; ">
+    <div class="fd-right__bottom-section">
 
       <PowerTable
         :title="powerTableConfig.title"
@@ -113,36 +123,20 @@ defineProps({
         :titleColor="powerTableConfig.titleColor"
         :labelColor="powerTableConfig.labelColor"
         :borderColor="powerTableConfig.borderColor"
-        style=" width: 180px; margin-right: 50px; "
+        class="power-table--180"
       />
 
-      <div style="display: flex; flex-direction: column; gap: 5px;">
-        
-        <div
-        style="
-          border: 1px solid rgba(90, 255, 255, 1);
-          padding: 0 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          "
-      >
-          <DcAcIcon status="active" style="margin-right: 40px;"/>
+      <div class="fd-right__icon-group">
+        <div class="fd-right__icon-row">
+          <DcAcIcon status="active" class="dc-ac-icon--spaced"/>
           <DcAcIcon status="active" />
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 10px;
-            "
-          >
+          <div class="fd-right__triangle-wrapper">
             <TriangleGroup  selected />
           </div>
-          <DcAcIcon status="active" style="margin-right: 40px;"/>
+          <DcAcIcon status="active" class="dc-ac-icon--spaced"/>
           <DcAcIcon status="active" />
         </div>
-  
+
         <CollapsePowerTable
           triggerTitle="方阵列表"
           tableTitle="方阵详情"
@@ -167,10 +161,10 @@ defineProps({
           labelColor="#fa8c16"
           borderColor="#52c41a"
           lineColor="#52c41a"
-          style="width: 400px"
+          class="collapse-table--wide"
         />
       </div>
-      
+
     </div>
   </div>
 </template>
@@ -253,5 +247,87 @@ defineProps({
 
 .fd-right__symbol-icon {
   margin-right: 100px;
+}
+
+/* 绝对定位的表格 */
+.fd-right__absolute-table {
+  position: absolute;
+  top: 390px;
+}
+
+.fd-right__absolute-table--1 {
+  left: 900px;
+}
+
+.fd-right__absolute-table--2 {
+  left: 1250px;
+}
+
+.fd-right__absolute-table--3 {
+  left: 1550px;
+}
+
+/* PowerTable 尺寸变体 */
+.power-table--250 {
+  width: 250px;
+  margin-right: 50px;
+}
+
+.power-table--200 {
+  width: 200px;
+  margin-right: 50px;
+}
+
+.power-table--180 {
+  width: 180px;
+  margin-right: 50px;
+}
+
+.power-table--symbol-right {
+  margin-left: 40px;
+  width: 320px;
+}
+
+/* 底部区域 */
+.fd-right__bottom-section {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-xs);
+}
+
+.fd-right__icon-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  border: 1px solid #00ffff;
+  padding: 0 12px;
+}
+
+.fd-right__icon-row {
+  border: 1px solid var(--color-cyan);
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fd-right__triangle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dc-ac-icon--spaced {
+  margin-right: 40px;
+}
+
+.collapse-table--wide {
+  width: 400px;
+}
+
+/* 动态高度竖线 */
+.fd-right__vline--dynamic {
+  height: 100%;
 }
 </style>

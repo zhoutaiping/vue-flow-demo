@@ -1,32 +1,22 @@
 <template>
-  <!-- 三角形组容器：根据布局类型适配样式 -->
   <div
     class="triangle-group"
-    :class="[`layout-${layoutType}`]"
-    :style="{ gap: `${gap}px` }"
+    :class="[`layout-${layoutType}`, `gap-${gap}`]"
   >
-    <!-- 循环渲染三个三角形 -->
     <div
       v-for="(_, index) in 3"
       :key="index"
       class="triangle-item"
       :class="[
-        { 'triangle-selected': selected }, // 选中状态（蓝色）
-        { 'triangle-active': active }, // 激活状态（红色）
+        { 'triangle-selected': selected },
+        { 'triangle-active': active },
+        `size-${size}`
       ]"
-      :style="{
-        /* 控制三角形尺寸：边长决定三角形大小 */
-        '--triangle-size': `${size}px`,
-        /* 基础颜色：未选中/激活时的三角形颜色 */
-        '--triangle-base-color': baseColor,
-      }"
     />
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-
 defineProps({
   size: {
     type: Number,
@@ -38,7 +28,7 @@ defineProps({
   },
   layoutType: {
     type: String,
-    validator: (val) => ["row", "triangle"], // 仅支持这两种布局
+    validator: () => ["row", "triangle"],
     default: "row",
   },
   selected: {
@@ -72,22 +62,64 @@ defineProps({
 /* 布局2：三角排布（三个三角呈品字形） */
 .layout-triangle {
   position: relative;
-  width: calc(var(--triangle-size) * 2);
-  height: calc(var(--triangle-size) * 2);
   flex-wrap: nowrap;
+
+  /* 尺寸变体 */
+  &.gap-10 {
+    width: 28px;
+    height: 28px;
+  }
+
+  &.gap-12 {
+    width: 34px;
+    height: 34px;
+  }
+
+  &.gap-14 {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Gap 变体 */
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-12 {
+  gap: 12px;
+}
+
+.gap-14 {
+  gap: 14px;
 }
 
 /* 核心：CSS画三角形（通过透明border实现） */
 .triangle-item {
-  /* 隐藏默认内容区域 */
   width: 0;
   height: 0;
-  /* 三角形方向：默认向下（可修改border方向改变朝向） */
   border-left: calc(var(--triangle-size) / 2) solid transparent;
   border-right: calc(var(--triangle-size) / 2) solid transparent;
   border-top: var(--triangle-size) solid var(--triangle-base-color);
-  transition: all 0.2s ease;
+  transition: border-top-color var(--transition-base);
   transform: rotate(-90deg);
+
+  /* 尺寸变体 */
+  &.size-14 {
+    --triangle-size: 14px;
+  }
+
+  &.size-16 {
+    --triangle-size: 16px;
+  }
+
+  &.size-18 {
+    --triangle-size: 18px;
+  }
+
+  &.size-20 {
+    --triangle-size: 20px;
+  }
 }
 
 /* 三角排布的位置调整 */
