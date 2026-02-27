@@ -370,12 +370,11 @@ defineProps({
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  border: 1px solid #00ffff;
   padding: 0 12px;
 }
 
 .fd-right__icon-row {
-  border: 1px solid var(--color-cyan);
+  border: 1px solid #00ffff;
   padding: 0 var(--space-md);
   display: flex;
   align-items: center;
