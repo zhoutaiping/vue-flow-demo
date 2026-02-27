@@ -16,7 +16,61 @@ defineProps({
     type: Array,
     default: () => [],
   },
-  // PowerTable 配置
+  // 绝对定位的可拖拽表格配置
+  draggableTables: {
+    type: Array,
+    default: () => [
+      {
+        id: 1,
+        title: "进线柜-100",
+        dataList: [
+          { label: "有功功率", value: "456kW" },
+          { label: "无功功率", value: "123kVar" },
+          { label: "计量电量", value: "789kWh" },
+        ],
+        titleColor: "#52c41a",
+        labelColor: "#fa8c16",
+        borderColor: "#52c41a",
+        x: 900,
+        y: 390,
+        width: 250,
+        className: "power-table--250"
+      },
+      {
+        id: 2,
+        title: "SVG-22222100",
+        dataList: [
+          { label: "有功功率", value: "456kW" },
+          { label: "无功功率", value: "123kVar" },
+          { label: "计量电量", value: "789kWh" },
+        ],
+        titleColor: "#52c41a",
+        labelColor: "#fa8c16",
+        borderColor: "#52c41a",
+        x: 1250,
+        y: 390,
+        width: 200,
+        className: "power-table--200"
+      },
+      {
+        id: 3,
+        title: "SVG-222222100",
+        dataList: [
+          { label: "有功功率", value: "456kW" },
+          { label: "无功功率", value: "123kVar" },
+          { label: "计量电量", value: "789kWh" },
+        ],
+        titleColor: "#52c41a",
+        labelColor: "#fa8c16",
+        borderColor: "#52c41a",
+        x: 1550,
+        y: 390,
+        width: 200,
+        className: "power-table--200"
+      }
+    ]
+  },
+  // PowerTable 配置（符号区域）
   powerTableConfig: {
     type: Object,
     default: () => ({
@@ -30,6 +84,50 @@ defineProps({
       labelColor: "#fa8c16",
       borderColor: "#52c41a",
     }),
+  },
+  // PowerTable 配置（底部区域）
+  bottomPowerTableConfig: {
+    type: Object,
+    default: () => ({
+      title: "曼德电子03方阵M002-FZ003",
+      dataList: [
+        { label: "有功功率", value: "456kW" },
+        { label: "无功功率", value: "123kVar" },
+        { label: "计量电量", value: "789kWh" },
+      ],
+      titleColor: "#52c41a",
+      labelColor: "#fa8c16",
+      borderColor: "#52c41a",
+    }),
+  },
+  // CollapsePowerTable 配置
+  collapseTableConfig: {
+    type: Object,
+    default: () => ({
+      triggerTitle: "方阵列表",
+      tableTitle: "方阵详情",
+      columns: ['有功功率', '无功功率', '日发电量', '总发电量'],
+      dataList: [
+        {
+          name: '曼德电子01方阵',
+          有功功率: '123kW',
+          无功功率: '45kVar',
+          日发电量: '890kWh',
+          总发电量: '12.3MWh',
+        },
+        {
+          name: '曼德电子02方阵',
+          有功功率: '456kW',
+          无功功率: '78kVar',
+          日发电量: '901kWh',
+          总发电量: '45.6MWh',
+        },
+      ],
+      titleColor: "#52c41a",
+      labelColor: "#fa8c16",
+      borderColor: "#52c41a",
+      lineColor: "#52c41a"
+    })
   },
   // CircleLine 配置
   circleLineConfig: {
@@ -46,39 +144,27 @@ defineProps({
 <template>
   <div class="fd-right">
 
-    <!-- 绝对定位的 PowerTable -->
-    <div class="fd-right__absolute-table fd-right__absolute-table--1">
+    <!-- 绝对定位的可拖拽 PowerTable -->
+    <vue-draggable-resizable
+      v-for="table in draggableTables"
+      :key="table.id"
+      :w="table.width"
+      :h="auto"
+      :x="table.x"
+      :y="table.y"
+      :resizable="false"
+      :z="1"
+      class="fd-right__absolute-table"
+    >
       <PowerTable
-        :title="'进线柜-100'"
-        :dataList="powerTableConfig.dataList"
-        :titleColor="powerTableConfig.titleColor"
-        :labelColor="powerTableConfig.labelColor"
-        :borderColor="powerTableConfig.borderColor"
-        class="power-table--250"
+        :title="table.title"
+        :dataList="table.dataList"
+        :titleColor="table.titleColor"
+        :labelColor="table.labelColor"
+        :borderColor="table.borderColor"
+        :class="table.className"
       />
-    </div>
-
-    <div class="fd-right__absolute-table fd-right__absolute-table--2">
-      <PowerTable
-        :title="'SVG-22222100'"
-        :dataList="powerTableConfig.dataList"
-        :titleColor="powerTableConfig.titleColor"
-        :labelColor="powerTableConfig.labelColor"
-        :borderColor="powerTableConfig.borderColor"
-        class="power-table--200"
-      />
-    </div>
-
-    <div class="fd-right__absolute-table fd-right__absolute-table--3">
-      <PowerTable
-        :title="'SVG-222222100'"
-        :dataList="powerTableConfig.dataList"
-        :titleColor="powerTableConfig.titleColor"
-        :labelColor="powerTableConfig.labelColor"
-        :borderColor="powerTableConfig.borderColor"
-        class="power-table--200"
-      />
-    </div>
+   </vue-draggable-resizable>
 
     <div class="fd-right__label">{{ flowTitleUnit }}</div>
     <div class="fd-right__spacer"></div>
@@ -118,11 +204,11 @@ defineProps({
     <div class="fd-right__bottom-section">
 
       <PowerTable
-        :title="powerTableConfig.title"
-        :dataList="powerTableConfig.dataList"
-        :titleColor="powerTableConfig.titleColor"
-        :labelColor="powerTableConfig.labelColor"
-        :borderColor="powerTableConfig.borderColor"
+        :title="bottomPowerTableConfig.title"
+        :dataList="bottomPowerTableConfig.dataList"
+        :titleColor="bottomPowerTableConfig.titleColor"
+        :labelColor="bottomPowerTableConfig.labelColor"
+        :borderColor="bottomPowerTableConfig.borderColor"
         class="power-table--180"
       />
 
@@ -138,29 +224,14 @@ defineProps({
         </div>
 
         <CollapsePowerTable
-          triggerTitle="方阵列表"
-          tableTitle="方阵详情"
-          :columns="['有功功率', '无功功率', '日发电量', '总发电量']"
-          :dataList="[
-            {
-              name: '曼德电子01方阵',
-              有功功率: '123kW',
-              无功功率: '45kVar',
-              日发电量: '890kWh',
-              总发电量: '12.3MWh',
-            },
-            {
-              name: '曼德电子02方阵',
-              有功功率: '456kW',
-              无功功率: '78kVar',
-              日发电量: '901kWh',
-              总发电量: '45.6MWh',
-            },
-          ]"
-          titleColor="#52c41a"
-          labelColor="#fa8c16"
-          borderColor="#52c41a"
-          lineColor="#52c41a"
+          :triggerTitle="collapseTableConfig.triggerTitle"
+          :tableTitle="collapseTableConfig.tableTitle"
+          :columns="collapseTableConfig.columns"
+          :dataList="collapseTableConfig.dataList"
+          :titleColor="collapseTableConfig.titleColor"
+          :labelColor="collapseTableConfig.labelColor"
+          :borderColor="collapseTableConfig.borderColor"
+          :lineColor="collapseTableConfig.lineColor"
           class="collapse-table--wide"
         />
       </div>
